@@ -1,0 +1,66 @@
+import rhinoscriptsyntax as rs
+import datetime as dt
+
+'''
+Import calls referencing external code - in this case, Rhinoscriptsyntax and datetime.
+We assign each of them an alias using the 'as' keyword in order simplify function calls later.
+'''
+
+def viewportclock():  # Main Function declaration
+  now = dt.datetime.now() 
+  # We create a time object which contains a record the date and time of the function call datetime.now().
+  textobject_id = rs.AddText(str(now), (0,0,0), 20)
+ '''
+We create a new Rhino Text object to display the date and time from step 5.
+rs.AddText (Text, point_or_plane , Height=1.0 , Font="Arial" ,font_style=0 )
+Five arguments, the last three of which have default assignments, and so are optional. 
+When adding a text object to Rhino we must specify the text string and the location for the object. 
+There are no defaults for this. The height of the text, font name and style do have default values. 
+However, since we're not happy with the default height, we will override it to be much bigger:
+textobject_id = rs.AddText(str(now), (0,0,0), 20)
+The Text argument must contain a String description of the current system time. We will simply nest casting function to get it. 
+Since a cast operation for a datetime object is a well known and solid operation, we do not have to check for a Null variable and we can put it 'inline'. 
+This will give us the date and the time. we could have pared this down to just the time by calling the dt.datetime.time(now) function. 
+Neither of these return a String type variable, so before we pass it into Rhino we have to cast it to a proper String using the str() function. 
+This is analogous with our code on page 20.
+The point_or_plane argument requires a list of doubles. We haven't done lists yet, but it essentially means we have to supply the x, y and z coordinates of the text insertion point. 
+(0,0,0) means the same as the world origin.The default height of text objects is 1.0 units, but we want our clock to look big since big things look expensive. 
+Therefore we're overriding it to be 20 units instead.
+
+  '''
+  
+  if textobject_id is None: return
+  
+  '''
+
+I don't think there's anything here that could possibly go wrong, but it never hurts to be sure. 
+Just in case the text object hasn't been created we need to abort the subroutine in order to prevent an error later on.
+
+  '''
+
+  rs.ZoomExtents(None, True)
+  while True:
+    rs.Sleep(1000)
+    
+    '''
+    There's no need to update our clock if the text remains the same, so we really only need to change the text once every second.
+    The Rhino.Sleep() method will pause Rhino for the specified amount of milliseconds.
+    We're forcing the loop to take it easy, by telling it to take some time off on every iteration.
+    We could remove this line and the script will simply update the clock many times per second. 
+    This kind of reckless behaviour will quickly flood the undo buffer.
+    '''
+    
+    now = dt.datetime.now()
+    
+    '''
+    Here we update our now object. This will give us an updated datetime object.
+    '''
+    
+    rs.TextObjectText(textobject_id, str(now))
+    
+    '''
+    This is the cool bit. Here we replace the text in the object with a new String representing the current system time.
+    '''
+    
+if __name__=="__main__":
+  viewportclock()
