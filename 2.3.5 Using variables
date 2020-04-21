@@ -1,0 +1,44 @@
+
+import rhinoscriptsyntax as rs
+
+dblMajorRadius = rs.GetReal("Major radius", 10.0, 1.0, 1000.0)
+dblMinorRadius = rs.GetReal("Minor radius", 2.0, 0.1, 100.0)
+intSides = rs.GetInteger("Number of sides", 6, 3, 20)
+
+'''
+This is where we ask the user to enter a number value ("Real" is another word for "Double"). 
+We supply the rs.GetReal() method with four fixed values, one string and three doubles. 
+The string will be displayed in the command-line and the first double (10.0) will be available as the default option:
+We're also limiting the numeric domain to a value between one and a thousand. 
+If the user attempts to enter a larger number, Rhino will claim it's too big:
+'''
+
+strPoint1 = " w" + str(dblMajorRadius) + ",0,0"
+strPoint2 = " w" + str(dblMajorRadius + dblMinorRadius) + ",0,0"
+
+'''
+On these lines we're creating the strings, based on the values of dblMajorRadius and dblMinorRadius. 
+If we assume the user has chosen the default values in all cases, 
+dblMajorRadius will be 10.0 and dblMinorRadius will be 2.0, which means that strPoint2 will look like " w12,0,0".
+'''
+
+rs.Command ("_SelNone")
+rs.Command ("_Polygon _NumSides=" + str(intSides) + " w0,0,0" + strPoint1)
+rs.Command ("_SelLast")
+rs.Command ("-_Properties _Object _Name Rail _Enter _Enter")
+rs.Command ("_SelNone")
+rs.Command ("_Polygon _NumSides=" + str(intSides) + strPoint1 + strPoint2)
+rs.Command ("_SelLast")
+rs.Command ("_Rotate3D w0,0,0 w1,0,0 90")
+rs.Command ("-_Properties _Object _Name Profile _Enter _Enter")
+rs.Command ("_SelNone")
+rs.Command ("-_Sweep1 _SelName Rail _SelName Profile _Enter _Enter _Closed=Yes _Enter")
+rs.Command ("_SelName Rail")
+rs.Command ("_SelName Profile")
+rs.Command ("_Delete")
+
+'''
+This is the same as the macro on page 3, 
+except that we've replaced some bits with variables and there are three extra lines at the bottom which get rid of the construction geometry 
+(so we can run the script more than once without it breaking down).
+'''
