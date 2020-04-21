@@ -1,0 +1,4 @@
+def AddVector(vecdir, base_point=[0,0,0]):
+tip_point = rs.PointAdd(base_point, vecdir)
+line = rs.AddLine(base_point, tip_point)
+if line: return rs.CurveArrows(line, 2)
