@@ -1,0 +1,13 @@
+_SelNone
+// the underscores before all the command names are due to Rhino localization. 
+// Using underscores will force Rhino to use English command names
+_Polygon _NumSides=6 w0,0,0 w10,0,0
+_SelLast
+-_Properties _Object _Name RailPolygon _Enter _Enter
+_SelNone
+_Polygon _NumSides=6 w10,0,0 w12,0,0
+_SelLast
+_Rotate3D w0,0,0 w10,0,0 90
+-_Properties _Object _Name ProfilePolygon _Enter _Enter
+_SelNone
+-_Sweep1 _SelName RailPolygon _SelName ProfilePolygon _Enter _Enter _Closed=Yes Enter
