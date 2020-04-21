@@ -1,0 +1,11 @@
+import rhinoscriptsyntax as rs
+import time
+#This script will rename an object using the current system time
+
+strObjectID = rs.GetObject("Select an object to rename",0,False,True)
+
+if strObjectID:
+  strNewName = "Time: " + str(time.localtime())
+  rs.ObjectName(strObjectID, strNewName)
+  
+  //rs.ObjectName(strObjectID, "Time: " & str(time.localtime()))
