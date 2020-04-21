@@ -1,0 +1,23 @@
+import rhinoscriptsyntax as rs
+
+  # Compute the length of a polyline point-array:
+def PolylineLength(arrVertices):
+  PolylineLength = 0.0
+  for i in range(0,len(arrVertices)-1):
+    PolylineLength = PolylineLength + rs.Distance(arrVertices[i], arrVertices[i+1])
+    
+  # Subdivide a polyline by adding extra vertices halfway between all existing vertices:
+def SubDividePolyline(arrV)
+  arrSubD = []
+  
+  for i in range(0, len(arrV)-1):
+  'copy the original vertex location
+  arrSubD.append(arrV[i])
+  'compute the average of the current vertex and the next one
+  arrSubD.append([arrV[i][0] + arrV[i+1][0]] / 2.0, _
+                  [arrV(i][1] + arrV[i+1][1]] / 2.0, _
+                  [arrV[i][2] + arrV[i+1][2]] / 2.0])
+
+'copy the last vertex (this is skipped by the loop)
+arrSubD.append(arrV[len(arrV)])
+return arrSubD
